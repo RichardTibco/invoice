@@ -11,13 +11,13 @@ public class InvoicePrintExecution {
 
     private long invoiceId;
 
-    //秒杀执行结果状态
+    //执行结果状态
     private int state;
 
     //状态表示
     private String stateInfo;
 
-    //秒杀成功对象
+    //成功对象
     private SuccessPrinted successPrinted;
 
     @Override

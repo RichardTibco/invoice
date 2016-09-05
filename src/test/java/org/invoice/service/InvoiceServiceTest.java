@@ -1,5 +1,6 @@
 package org.invoice.service;
 
+import org.invoice.dto.ComboExecution;
 import org.invoice.dto.Exposer;
 import org.invoice.entity.Invoice;
 import org.invoice.exception.InvoiceCloseException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -83,6 +85,14 @@ public class InvoiceServiceTest {
         } else {
             logger.warn("exposer={}",exposer);
         }
+    }
+
+    @Test
+    public void testComboInvoice() throws Exception {
+        Long[] ll = {1000L, 1001L, 1002L};
+        List<Long> invoices = Arrays.asList(ll);
+        ComboExecution comboExecution = invoiceService.ComboInvoice(invoices);
+        logger.info("new Invoice is {}", comboExecution.getInvoice());
     }
 
 }

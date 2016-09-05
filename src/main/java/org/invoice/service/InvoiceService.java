@@ -1,5 +1,6 @@
 package org.invoice.service;
 
+import org.invoice.dto.ComboExecution;
 import org.invoice.dto.Exposer;
 import org.invoice.dto.InvoicePrintExecution;
 import org.invoice.entity.Invoice;
@@ -41,4 +42,11 @@ public interface InvoiceService {
      * @return
      */
     InvoicePrintExecution executePrintInvoice(long invoiceId, long userPhone, String md5) throws InvoiceException, RepeatPrintException, InvoiceCloseException;
+
+    /**
+     * 执行合并电子发票动作
+     * @param ids
+     * @return
+     */
+    ComboExecution ComboInvoice(List<Long> ids);
 }

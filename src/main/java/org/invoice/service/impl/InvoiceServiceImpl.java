@@ -2,22 +2,23 @@ package org.invoice.service.impl;
 
 import org.invoice.dao.InvoiceDao;
 import org.invoice.dao.SuccessPrintedDao;
+import org.invoice.dto.ComboExecution;
 import org.invoice.dto.Exposer;
 import org.invoice.dto.InvoicePrintExecution;
 import org.invoice.entity.Invoice;
 import org.invoice.entity.SuccessPrinted;
 import org.invoice.enums.InvoiceStatEnum;
-import org.invoice.exception.InvoiceCloseException;
-import org.invoice.exception.InvoiceException;
-import org.invoice.exception.RepeatPrintException;
+import org.invoice.exception.*;
 import org.invoice.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -116,4 +117,48 @@ public class InvoiceServiceImpl implements InvoiceService{
             throw new InvoiceException("Invoice print inner error:" + e.getMessage());
         }
     }
+    @Override
+    @Transactional
+    public ComboExecution ComboInvoice(List<Long> ids) {
+        if(CollectionUtils.isEmpty(ids)) {
+            throw new InvoiceException("there is no invoice.");
+        }
+        Date dt = new Date();
+        Calendar rightNow = Calendar.getInstance();
+        rightNow.setTime(dt);
+        rightNow.add(Calendar.DAY_OF_YEAR,10);//日期加10天
+        Date nowTime1=rightNow.getTime();
+        try {
+            Invoice invoice = new Invoice("ComboName",1, (short) 1,dt,nowTime1);
+            int insertCount = invoiceDao.insertInvoice(invoice);
+            long pid = invoice.getInvoiceId();
+
+            if (insertCount <= 0) {
+                //没有创建成功新的发票rollback
+                throw new InvoiceCreateException("Create Invoice fail");
+            } else {
+                //创建成功
+                int updateCount = invoiceDao.setupConnection(pid, ids);
+
+                if (updateCount <= 0) {
+                    //没有建立起发票间的关联,rollback
+                    throw new InvoiceConnectionException("Connection invoice fail");
+                } else {
+                    Invoice newInvoice = invoiceDao.queryById(pid);
+                    return new ComboExecution(pid, InvoiceStatEnum.CREATED, newInvoice);
+                }
+            }
+
+        }catch (InvoiceCreateException e1) {
+            throw e1;
+        } catch (InvoiceConnectionException e2) {
+            throw e2;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            //所有编译期异常 转化为运行期异常
+            throw new InvoiceException("Invoice create inner error:" + e.getMessage());
+        }
+
+    }
+
 }

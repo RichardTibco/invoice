@@ -20,10 +20,10 @@ public interface InvoiceDao {
 
     /**
      * 根据id查询电子发票
-     * @param invoiceIde
+     * @param invoiceId
      * @return
      */
-    Invoice queryById(long invoiceIde);
+    Invoice queryById(long invoiceId);
 
 
     /**
@@ -33,4 +33,17 @@ public interface InvoiceDao {
      * @return
      */
     List<Invoice> queryAll(@Param("offset") int offet, @Param("limit") int limit);
+
+    /**
+     * 创建合成后的发票
+     * @param name
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+//    int insertInvoice(@Param("name") String name, @Param("counter") int counter, @Param("state") short state,
+//                      @Param("startTime") Date startTime,@Param("endTime") Date endTime);
+    int insertInvoice(@Param("invoice") Invoice invoice);
+
+    int setupConnection(@Param("pid") long pid, @Param("ids") List<Long> ids);
 }

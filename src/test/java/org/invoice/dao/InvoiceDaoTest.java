@@ -8,8 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -43,6 +42,23 @@ public class InvoiceDaoTest {
     public void printInvoice() throws Exception {
         Date printTime = new Date();
         int updateCount = invoiceDao.printInvoice(1000L,printTime);
+        System.out.println("updateCount=" + updateCount);
+    }
+
+    @Test
+    public  void insertInvoice() throws Exception {
+        Date testTime = new Date();
+        Invoice invoice = new Invoice("testCombo", 1, (short) 1, testTime, testTime);
+        int updateCount = invoiceDao.insertInvoice(invoice);
+        System.out.println("updateCount=" + updateCount);
+    }
+
+    @Test
+    public void setupConnection() throws Exception {
+        List<Long> l = new ArrayList<Long>();
+        l.add(1000L);
+        l.add(1001L);
+        int updateCount = invoiceDao.setupConnection(1004L,l);
         System.out.println("updateCount=" + updateCount);
     }
 }

@@ -17,6 +17,8 @@ public class Invoice{
 
     private int counter;
 
+    private short state;
+
     private Date startTime;
 
     private Date endTime;
@@ -65,6 +67,14 @@ public class Invoice{
         this.counter = counter;
     }
 
+    public short getState() {
+        return state;
+    }
+
+    public void setState(short state) {
+        this.state = state;
+    }
+
     public Date getStartTime() {
         return startTime;
     }
@@ -97,6 +107,14 @@ public class Invoice{
         this.createTime = createTime;
     }
 
+    public Invoice(String name, int counter, short state, Date startTime, Date endTime) {
+        this.name = name;
+        this.counter = counter;
+        this.state = state;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "Invoice{" +
@@ -105,6 +123,7 @@ public class Invoice{
                 ", code='" + code + '\'' +
                 ", number='" + number + '\'' +
                 ", counter=" + counter +
+                ", state=" + state +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", issueInvoiceTime=" + issueInvoiceTime +

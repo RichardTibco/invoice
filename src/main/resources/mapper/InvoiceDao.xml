@@ -17,6 +17,26 @@
         and counter > 0;
     </update>
 
+    <update id="setupConnection">
+        update
+        invoice
+        set
+        pid = #{pid},
+        state = -1
+        where invoice_id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="insertInvoice" parameterType="Invoice" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="invoiceId" order="AFTER">
+            SELECT LAST_INSERT_ID() AS invoiceId
+        </selectKey>
+        insert ignore into invoice(name,counter, state, start_time,end_time)
+        values (#{invoice.name},#{invoice.counter},#{invoice.state},#{invoice.startTime},#{invoice.endTime})
+    </insert>
+
     <select id="queryById" resultType="Invoice" parameterType="long">
         select invoice_id,name,code,number,counter,issue_invoice_time,create_time,start_time,end_time
         from invoice

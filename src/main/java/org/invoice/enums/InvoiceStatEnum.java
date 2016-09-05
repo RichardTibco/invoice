@@ -5,6 +5,7 @@ package org.invoice.enums;
  */
 public enum InvoiceStatEnum {
 
+    CREATED(2,"合成电子发票成功"),
     SUCCESS(1,"打印成功"),
     END(0,"打印有效期结束"),
     REPEAT_PRINT(-1,"重复打印"),
