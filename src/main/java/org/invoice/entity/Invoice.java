@@ -9,6 +9,8 @@ public class Invoice{
 
     private long invoiceId;
 
+    private long pid;
+
     private String name;
 
     private String code;
@@ -33,6 +35,14 @@ public class Invoice{
 
     public void setInvoiceId(long invoiceId) {
         this.invoiceId = invoiceId;
+    }
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
     }
 
     public String getName() {
@@ -107,6 +117,23 @@ public class Invoice{
         this.createTime = createTime;
     }
 
+    public Invoice() {
+    }
+
+    public Invoice(long invoiceId, long pid, String name, String code, String number, int counter, short state, Date startTime, Date endTime, Date issueInvoiceTime, Date createTime) {
+        this.invoiceId = invoiceId;
+        this.pid = pid;
+        this.name = name;
+        this.code = code;
+        this.number = number;
+        this.counter = counter;
+        this.state = state;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.issueInvoiceTime = issueInvoiceTime;
+        this.createTime = createTime;
+    }
+
     public Invoice(String name, int counter, short state, Date startTime, Date endTime) {
         this.name = name;
         this.counter = counter;
@@ -119,6 +146,7 @@ public class Invoice{
     public String toString() {
         return "Invoice{" +
                 "invoiceId=" + invoiceId +
+                ", pid=" + pid +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", number='" + number + '\'' +

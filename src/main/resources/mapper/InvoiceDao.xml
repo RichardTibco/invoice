@@ -29,22 +29,19 @@
         </foreach>
     </update>
 
-    <insert id="insertInvoice" parameterType="Invoice" useGeneratedKeys="true">
-        <selectKey resultType="long" keyProperty="invoiceId" order="AFTER">
-            SELECT LAST_INSERT_ID() AS invoiceId
-        </selectKey>
-        insert ignore into invoice(name,counter, state, start_time,end_time)
-        values (#{invoice.name},#{invoice.counter},#{invoice.state},#{invoice.startTime},#{invoice.endTime})
+    <insert id="insertInvoice" parameterType="Invoice" useGeneratedKeys="true" keyProperty="invoice.invoiceId">
+        insert ignore into invoice(name,counter, state, start_time,end_time, issue_invoice_time)
+        values (#{invoice.name},#{invoice.counter},#{invoice.state},#{invoice.startTime},#{invoice.endTime},#{invoice.issueInvoiceTime})
     </insert>
 
     <select id="queryById" resultType="Invoice" parameterType="long">
-        select invoice_id,name,code,number,counter,issue_invoice_time,create_time,start_time,end_time
+        select invoice_id,pid,name,code,number,counter,state,issue_invoice_time,create_time,start_time,end_time
         from invoice
         where invoice_id = #{invoiceId}
     </select>
 
     <select id="queryAll" resultType="Invoice">
-        select invoice_id,name,code,number,counter,issue_invoice_time,create_time,start_time,end_time
+        select invoice_id,pid,name,code,number,counter,state,issue_invoice_time,create_time,start_time,end_time
         from invoice
         order by create_time desc
         limit #{offset},#{limit}

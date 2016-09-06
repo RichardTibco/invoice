@@ -133,7 +133,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             int insertCount = invoiceDao.insertInvoice(invoice);
             long pid = invoice.getInvoiceId();
 
-            if (insertCount <= 0) {
+            if (insertCount <= 0 || pid == 0) {
                 //没有创建成功新的发票rollback
                 throw new InvoiceCreateException("Create Invoice fail");
             } else {
