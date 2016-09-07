@@ -47,5 +47,13 @@
         limit #{offset},#{limit}
     </select>
 
+    <select id="queryByIds" resultType="Invoice">
+        select invoice_id,pid,name,code,number,counter,state,issue_invoice_time,create_time,start_time,end_time
+        from invoice
+        where invoice_id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 
 </mapper>

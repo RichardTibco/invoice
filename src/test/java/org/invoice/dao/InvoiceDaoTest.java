@@ -7,10 +7,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-
-import java.util.*;
-
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/9/4.
@@ -28,6 +27,18 @@ public class InvoiceDaoTest {
         Invoice invoice = invoiceDao.queryById(id);
         System.out.println(invoice.getName());
         System.out.println(invoice);
+    }
+
+    @Test
+    public void queryByIds() throws Exception {
+        List<Long> l = new ArrayList<Long>();
+        l.add(1000L);
+        l.add(1001L);
+        l.add(1002L);
+        List<Invoice> invoices = invoiceDao.queryByIds(l);
+        for (Invoice invoice: invoices) {
+            System.out.println(invoice);
+        }
     }
 
     @Test
@@ -61,4 +72,6 @@ public class InvoiceDaoTest {
         int updateCount = invoiceDao.setupConnection(1004L,l);
         System.out.println("updateCount=" + updateCount);
     }
+
+
 }

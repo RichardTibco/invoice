@@ -30,6 +30,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private static final int MAX_COMBO_NUMBER = 4;
     @Autowired
     InvoiceDao invoiceDao;
 
@@ -120,9 +121,17 @@ public class InvoiceServiceImpl implements InvoiceService{
     @Override
     @Transactional
     public ComboExecution ComboInvoice(List<Long> ids) {
-        if(CollectionUtils.isEmpty(ids)) {
+        if(CollectionUtils.isEmpty(ids) || ids.size() > MAX_COMBO_NUMBER) {
             throw new InvoiceException("there is no invoice.");
         }
+
+        List<Invoice> invoices = invoiceDao.queryByIds(ids);
+        for(Invoice inv :invoices){
+            if (inv.getState() != 0){
+                throw new InvoiceException("there is invalid invoice.");
+            }
+        }
+
         Date dt = new Date();
         Calendar rightNow = Calendar.getInstance();
         rightNow.setTime(dt);
