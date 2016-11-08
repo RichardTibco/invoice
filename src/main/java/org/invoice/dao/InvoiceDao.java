@@ -25,6 +25,7 @@ public interface InvoiceDao {
      */
     Invoice queryById(long invoiceId);
 
+    List<Invoice> queryByIds(@Param("ids") List<Long> ids);
 
     /**
      * 根据偏移量查询电子发票列表
